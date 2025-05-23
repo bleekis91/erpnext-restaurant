@@ -501,6 +501,10 @@ class TableOrder(Document):
         table = self._table
         items_to_return = []
         data_to_send = []
+
+        # Initialize sound trigger
+        should_play_sound = False
+
         for i in self.entry_items:
             item = frappe.get_doc("Order Entry Item", {"identifier": i.identifier})
             if item.status == status_attending:
@@ -510,7 +514,21 @@ class TableOrder(Document):
                 item.ordered_time = frappe.utils.now_datetime()
                 item.save()
 
+                # Check after items marked as sent
+                should_play_sound = True
+
                 data_to_send.append(table.get_command_data(item))
+        # Trigger sound after all items processed
+        if should_play_sound:
+            frappe.publish_realtime(
+                'order_items_sent',
+                message={
+                'order_id': self.name,
+                'table': self.table,
+                'count': len(items_to_return)
+                },
+            #user=frappe.session.user
+            )
 
         self.reload()
         self.synchronize(dict(status=["Sent"]))

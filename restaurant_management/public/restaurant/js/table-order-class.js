@@ -548,15 +548,28 @@ class TableOrder {
         }
     }
 
-    print_account() {
+    async print_account() {
         const title = this.data.name + " (" + __("Account") + ")";
         const order_manage = this.order_manage;
+
+        // Clear any cached value
+        frappe.model.clear_doc('Restaurant Settings', 'Restaurant Settings');    
+    
+        // 1. Dynamically fetch print format from Restaurant Settings
+        const { message: { print_format } } = await frappe.db.get_value(
+            'Restaurant Settings', 
+            'Restaurant Settings', 
+            'print_format'
+        );
+        const account_print_format = print_format;
+    
+        // 2. Build props with dynamic format
         const props = {
             model: "Table Order",
             model_name: this.data.name,
             from_server: true,
             args: {
-                format: "Order Account",
+                format: account_print_format, // Now dynamic!
                 _lang: RM.lang,
                 no_letterhead: RM.pos_profile.letter_head ? RM.pos_profile.letter_head : 1,
                 letterhead: RM.pos_profile.letter_head ? RM.pos_profile.letter_head : 'No%20Letterhead'
@@ -565,8 +578,9 @@ class TableOrder {
             is_pdf: true,
             customize: true,
             title: title
-        }
-
+        };
+    
+        // 3. Handle modal (unchanged)
         if (order_manage.print_modal) {
             order_manage.print_modal.set_props(props);
             order_manage.print_modal.set_title(title);

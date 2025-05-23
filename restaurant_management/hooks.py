@@ -38,8 +38,10 @@ app_include_js = [
     '/assets/restaurant_management/js/interact.min.js',
     '/assets/restaurant_management/js/drag.js',
     '/assets/restaurant_management/js/RM.helper.js',
-    '/assets/restaurant_management/js/object-manage.js'
+    '/assets/restaurant_management/js/object-manage.js',
+    '/assets/restaurant_management/js/kitchen_alerts.js?ver=' + app_version  # Cache busting
 ]
+
 
 # include js, css files in header of web template
 # web_include_css = "/assets/{app_name}/css/{app_name}.css"
