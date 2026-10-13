@@ -14,7 +14,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Next Status",
-   "options": "Sent\nProcessing\nCompleted\nDelivering\nDelivered",
+   "options": "Pending\nAttending\nSent\nProcessing\nCompleted\nDelivering\nDelivered\nInvoiced\nDeleted",
    "reqd": 1
   },
   {
@@ -22,7 +22,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status Managed",
-   "options": "Sent\nProcessing\nCompleted\nDelivering\nDelivered",
+   "options": "Pending\nAttending\nSent\nProcessing\nCompleted\nDelivering\nDelivered\nInvoiced\nDeleted",
    "reqd": 1
   }
  ],

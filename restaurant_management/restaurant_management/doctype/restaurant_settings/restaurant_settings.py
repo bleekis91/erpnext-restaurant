@@ -70,6 +70,14 @@ class RestaurantSettings(Document):
 
         return []
 
+    # Backward compatibility for page/controller variants that call
+    # restaurant_settings.user_has_admin_role() and restaurant_access().
+    def user_has_admin_role(self):
+        return frappe.session.user == "Administrator" or "System Manager" in frappe.get_roles()
+
+    def restaurant_access(self):
+        return list(self.rooms_access())
+
 
 @frappe.whitelist()
 def reinstall():
